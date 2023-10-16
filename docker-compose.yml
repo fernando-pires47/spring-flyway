@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  spring-flyway:
+    build: ./flyway
+    container_name: spring-flyway
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/flyway"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
